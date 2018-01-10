@@ -20,14 +20,12 @@ input_fasta = list(SeqIO.parse(args.INPUT_FASTA, "fasta"))
 input_dict = {record.id:record for record in input_fasta}
 input_len = len(input_dict)
 
-#with open(args.FILTER_FILE, "r") as f:
-#    goi = sorted(f.read().split('\n'))
 goi = open(args.FILTER_FILE).readlines()
-goi = [line[:-1] for line in goi]
+goi = [line[:-1] for line in goi] # Remove trailing \n
 
 goi_records = []
-print('Filtering...\n')
 matches = 0
+print('Filtering...\n')
 
 for gene in goi:
     if gene in input_dict:
@@ -38,12 +36,13 @@ for gene in goi:
             goi_records.append(input_dict[gene])
 
 
-print('Input:{}\nFilter:{}'.format(input_len, len(goi)))
-print('Matches:{}\nNo Matches:{}'.format(matches, len(goi)-matches))
+print('Input:{}'.format(input_len))
+print('Filter:{}'.format(len(goi)))
+print('Matches:{}'.format(matches))
+print('No Matches: {}'.format(len(goi)-matches))
 
 if args.reverse:
     goi_records = input_dict.values()
 
-print("Records written: {}".format(len(goi_records)))
 SeqIO.write(goi_records, args.OUTPUT_FASTA, "fasta")
-
+print("\nRecords written: {}".format(len(goi_records)))
