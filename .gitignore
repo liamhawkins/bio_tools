@@ -1,0 +1,4 @@
+venv/
+*.fasta
+*.fa
+*.txt
