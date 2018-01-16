@@ -2,3 +2,4 @@ venv/
 *.fasta
 *.fa
 *.txt
+*.swp
