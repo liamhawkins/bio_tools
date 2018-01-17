@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
@@ -28,7 +30,10 @@ parser.add_argument('-f', '--foldchange', dest='foldchange',
 args = parser.parse_args()
 
 INPUT_FILENAME, INPUT_EXTENSION = os.path.splitext(args.input_file)
-_, OUTPUT_EXTENSION = os.path.splitext(args.output_file)
+if args.output_file == None:
+    OUTPUT_FILE = INPUT_FILENAME + '.pdf'
+else:
+    OUTPUT_FILE = args.output_file
 P_VAL_THRESH = args.pvalue
 FC_THRESH = args.foldchange
 
@@ -62,8 +67,12 @@ plt.scatter(df['log2_fc'], df['neglog_p_value'], c=df['goi'])
 plt.xlabel('$log_2(Fold\ change)$', fontsize=20)
 plt.ylabel('$-log_{10}(\mathit{p}-value)$', fontsize=20)
 plt.axis([X_MIN,X_MAX,Y_MIN,Y_MAX])
-plt.plot([X_MIN,LOG_FC_THRESH_NEG],[NEG_LOG_P_THRESH,NEG_LOG_P_THRESH], color='grey', linestyle='--')
-plt.plot([LOG_FC_THRESH_POS,X_MAX],[NEG_LOG_P_THRESH,NEG_LOG_P_THRESH],color='grey', linestyle='--')
-plt.plot([LOG_FC_THRESH_NEG,LOG_FC_THRESH_NEG],[NEG_LOG_P_THRESH,Y_MAX], color='grey', linestyle='--')
-plt.plot([LOG_FC_THRESH_POS,LOG_FC_THRESH_POS],[NEG_LOG_P_THRESH,Y_MAX], color='grey', linestyle='--')
-plt.savefig(args.output_file, dpi=600)
+plt.plot([X_MIN,LOG_FC_THRESH_NEG],[NEG_LOG_P_THRESH,NEG_LOG_P_THRESH],
+        color='grey', linestyle='--')
+plt.plot([LOG_FC_THRESH_POS,X_MAX],[NEG_LOG_P_THRESH,NEG_LOG_P_THRESH],
+        color='grey', linestyle='--')
+plt.plot([LOG_FC_THRESH_NEG,LOG_FC_THRESH_NEG],[NEG_LOG_P_THRESH,Y_MAX],
+        color='grey', linestyle='--')
+plt.plot([LOG_FC_THRESH_POS,LOG_FC_THRESH_POS],[NEG_LOG_P_THRESH,Y_MAX],
+        color='grey', linestyle='--')
+plt.savefig(OUTPUT_FILE, dpi=600)
