@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tr ' ' '_' < $1 | awk 'BEGIN{RS=">"}{print $1"\t"$2;}' - | tail -n+2
